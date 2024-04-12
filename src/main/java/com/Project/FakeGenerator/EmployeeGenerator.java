@@ -1,8 +1,8 @@
 package com.Project.FakeGenerator;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.concurrent.Callable;
 import java.util.ArrayList;
@@ -15,12 +15,15 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 
-@Command(name = "employee-generator", mixinStandardHelpOptions = true, version = "1.0",
+//class-level annotation
+@Command(name = "employee-generator", mixinStandardHelpOptions = true, version = "1.0",   
         description = "Generates fake employee records and inserts them into the database")
+
 public class EmployeeGenerator implements Callable<Void> {
 
-    @Option(names = {"-c", "--count"}, defaultValue = "500",
+    @Option(names = {"-c", "--count"}, defaultValue = "500",  //short options(e.g., -c) or long options (e.g., --count).
             description = "Number of employee records to generate (default: 500)")
+    
     private int count;
 
     @Parameters(index = "0", description = "MySQL  username")
@@ -50,16 +53,17 @@ public class EmployeeGenerator implements Callable<Void> {
     private void createDatabaseAndTable() {
         try (Connection connection = DriverManager.getConnection(
                 "jdbc:mysql://localhost:3306/", DBUsername, DBPassword)) {
+        	
             // Create the database if not exists
             String createDbSQL = "CREATE DATABASE IF NOT EXISTS " + dbName;
-            try (PreparedStatement preparedStatement = connection.prepareStatement(createDbSQL)) {
-                preparedStatement.executeUpdate();
+            try (CallableStatement cs = connection.prepareCall(createDbSQL)) {
+                cs.executeUpdate();
             }
 
             // Use the database
             String useDbSQL = "USE " + dbName;
-            try (PreparedStatement preparedStatement = connection.prepareStatement(useDbSQL)) {
-                preparedStatement.executeUpdate();
+            try (CallableStatement cs = connection.prepareCall(useDbSQL)) {
+                cs.executeUpdate();
             }
 
             // Create the employee table if not exists
@@ -68,8 +72,8 @@ public class EmployeeGenerator implements Callable<Void> {
                     + "name VARCHAR(255),"
                     + "designation VARCHAR(255),"
                     + "year_of_joining INT)";
-            try (PreparedStatement preparedStatement = connection.prepareStatement(createTableSQL)) {
-                preparedStatement.executeUpdate();
+            try (CallableStatement cs = connection.prepareCall(createTableSQL)) {
+                cs.executeUpdate();
             }
 
             // Create the stored procedure for inserting data
@@ -82,8 +86,8 @@ public class EmployeeGenerator implements Callable<Void> {
                     + " INSERT INTO employee (id, name, designation, year_of_joining)"
                     + " VALUES (emp_id, emp_name, emp_designation, emp_year_of_joining);"
                     + "END";
-            try (PreparedStatement preparedStatement = connection.prepareStatement(createProcedureSQL)) {
-                preparedStatement.executeUpdate();
+            try (CallableStatement cs = connection.prepareCall(createProcedureSQL)) {
+                cs.executeUpdate();
             }
 
         } catch (SQLException e) {
@@ -113,16 +117,16 @@ public class EmployeeGenerator implements Callable<Void> {
         try (Connection connection = DriverManager.getConnection(
                 "jdbc:mysql://localhost:3306/" + dbName, DBUsername, DBPassword)) {
             String sql = "CALL insert_employee(?, ?, ?, ?)";
-            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            try (CallableStatement cs = connection.prepareCall(sql)) {
                 for (String[] emp : employees) {
-                    preparedStatement.setString(1, emp[0]);
-                    preparedStatement.setString(2, emp[1]);
-                    preparedStatement.setString(3, emp[2]);
-                    preparedStatement.setInt(4, Integer.parseInt(emp[3]));
-                    preparedStatement.addBatch();
+                    cs.setString(1, emp[0]);
+                    cs.setString(2, emp[1]);
+                    cs.setString(3, emp[2]);
+                    cs.setInt(4, Integer.parseInt(emp[3]));
+                    cs.addBatch();
                 }
                 // Execute batch insertion
-                preparedStatement.executeBatch();
+                cs.executeBatch();
                 System.out.println("Values inserted successfully");
             }
         } catch (SQLException e) {
