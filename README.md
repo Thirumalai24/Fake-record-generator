@@ -11,6 +11,7 @@ The Fake Employee Records Generator is a Java application that generates fake em
 ## Prerequisites
 Before running the application, ensure you have the following:
 - Java Development Kit (JDK) installed on your system.
+- Java Runtime Environment (JRE) installed on your system.
 - MySQL database server installed and running.
 - Maven installed (for building the project).
 
