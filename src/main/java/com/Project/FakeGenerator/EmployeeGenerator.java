@@ -21,9 +21,6 @@ import picocli.CommandLine.Parameters;
 
 public class EmployeeGenerator implements Callable<Void> {
 
-    @Option(names = {"-c", "--count"}, defaultValue = "500",  //short options(e.g., -c) or long options (e.g., --count).
-            description = "Number of employee records to generate (default: 500)")
-    
     private int count;
 
     @Parameters(index = "0", description = "MySQL  username")
@@ -34,6 +31,11 @@ public class EmployeeGenerator implements Callable<Void> {
 
     @Parameters(index = "2", description = "Database name")
     private String dbName;
+
+    @Parameters(index = "3", description = "Number of employee records to generate")
+    private void setCount(int count) {
+        this.count = count;
+    }
 
     @Override
     public Void call() throws Exception {
