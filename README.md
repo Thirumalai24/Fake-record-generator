@@ -1,7 +1,7 @@
 # Fake-record-generator
 
 ## Overview
-The Fake Employee Records Generator is a Java application that generates fake employee records and inserts them into a MySQL database. It utilizes the JavaFaker library to create realistic fake data for employee names, job titles, and years of joining.
+The Fake Employee Records Generator is a Java application that generates fake employee records and inserts them into a MySQL database. It utilizes the JavaFaker library to create realistic fake data for employee names, job titles, and year of joining.
 
 ## Features
 - Generates a specified number of fake employee records.
@@ -49,6 +49,7 @@ After the application completes execution, you can verify that the fake employee
 ## Dependencies
 - **JavaFaker**: A library for generating fake data.
 - **picocli**: A command-line interface framework for Java applications.
+- **Maven Shade Plugin**: A plugin for building runnable JAR files that include all dependencies, allowing for easier distribution and execution of your application.
 
 
 
