@@ -48,7 +48,7 @@ After the application completes execution, you can verify that the fake employee
 
 ## Dependencies
 - **JavaFaker**: A library for generating fake data.
-- **picocli**: A command-line interface framework for Java applications.
+- **Picocli**: A command-line interface framework for Java applications.
 - **Maven Shade Plugin**: A plugin for building runnable JAR files that include all dependencies, allowing for easier distribution and execution of your application.
 
 
