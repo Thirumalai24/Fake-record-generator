@@ -29,9 +29,9 @@ mvn clean package
 ### 3. Run the Application
 Execute the generated JAR file with the required parameters.
 ```
-java -jar FakeEmployeeRecords-0.0.1-SNAPSHOT.jar <DBUsername> <DBPassword> <dbName>
+java -jar FakeEmployeeRecords-0.0.1-SNAPSHOT.jar <DBUsername> <DBPassword> <dbName> <count>
 ```
-- Replace DBUsername, DBPassword, and dbName with your MySQL database credentials.
+- Replace DBUsername, DBPassword, dbName  and count with your MySQL database credentials.
 
 ## Viewing Results
 
